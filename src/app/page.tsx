@@ -1,6 +1,24 @@
+"use client"
+import { login } from "@/services/auth";
+import { redirect } from "next/navigation";
+import { FormEvent } from "react";
+
 export default function Home() {
+
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget)
+    const username = formData.get("username") as string
+    const password = formData.get("password") as string
+
+    const result = await login(username,password)
+    if(result){
+      redirect("/home")
+    }
+	}
+
   return (
-    <form className="h-full">
+    <form className="h-full" onSubmit={handleLogin}>
       <div className="mx-auto pt-28 w-full max-w-sm border-none shadow-none">
         <h1 className="text-2xl my-3">Welcome to My TodoList App</h1>
         <div className="grid gap-4">

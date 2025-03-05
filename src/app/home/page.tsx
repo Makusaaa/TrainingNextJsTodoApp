@@ -1,5 +1,6 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { deleteTask, getTaskList, insertTask } from "@/services/crud";
 
 type Todo = {
   id: number;
@@ -10,15 +11,30 @@ export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>("");
 
-  const addTodo = () => {
+  useEffect(() => {
+    (async () => {
+      const data = await getTaskList()
+      if(data){
+        const todoList = data.map(item => ({
+          id: item.id,
+          text: item.task,
+        }) as Todo)
+        setTodos(todoList)
+      }
+    })();
+	}, []);
+
+  const addTodo = async () => {
     if (newTodo.trim()) {
       setTodos([...todos, { id: Date.now(), text: newTodo }]);
       setNewTodo("");
+      await insertTask(newTodo);
     }
   };
 
-  const deleteTodo = (id: number) => {
+  const deleteTodo = async (id: number) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+    await deleteTask(id);
   };
 
   return (
