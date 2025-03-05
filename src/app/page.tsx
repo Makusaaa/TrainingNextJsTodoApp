@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <form method="post" className="h-full">
+    <form className="h-full">
       <div className="mx-auto pt-28 w-full max-w-sm border-none shadow-none">
         <h1 className="text-2xl my-3">Welcome to My TodoList App</h1>
         <div className="grid gap-4">
